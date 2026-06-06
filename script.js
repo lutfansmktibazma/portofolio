@@ -36,7 +36,51 @@
   };
 })();
 
-// ── 2. CUSTOM CURSOR ─────────────────────────────────────
+// ── 2. HAMBURGER MOBILE MENU ────────────────────────────────
+(function () {
+  const btn  = document.getElementById('navHamburger');
+  const menu = document.getElementById('mobileMenu');
+  if (!btn || !menu) return;
+
+  function close() {
+    btn.classList.remove('open');
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    if (window.lenis) window.lenis.start();
+  }
+
+  btn.addEventListener('click', () => {
+    const isOpen = btn.classList.toggle('open');
+    menu.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+    menu.setAttribute('aria-hidden', String(!isOpen));
+    // Pause Lenis scroll while menu is open
+    if (window.lenis) isOpen ? window.lenis.stop() : window.lenis.start();
+  });
+
+  // Close on any mobile nav link click
+  menu.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      close();
+      // Smooth scroll after short delay for CSS transition to finish
+      const target = link.getAttribute('href');
+      if (target && target.startsWith('#')) {
+        setTimeout(() => {
+          const el = document.querySelector(target);
+          if (el && window.lenis) {
+            window.lenis.scrollTo(el, { offset: -70 });
+          }
+        }, 200);
+      }
+    });
+  });
+
+  // Close on backdrop scroll
+  window.addEventListener('scroll', () => { if (btn.classList.contains('open')) close(); }, { passive: true });
+})();
+
+// ── 3. CUSTOM CURSOR ─────────────────────────────────────
 (function () {
   const dot  = document.createElement('div'); dot.id  = 'cur-dot';
   const ring = document.createElement('div'); ring.id = 'cur-ring';
@@ -130,6 +174,9 @@
 (function () {
   const wrap = document.getElementById('heroImgWrap');
   const img  = document.getElementById('heroImg');
+  const frontWrap = document.getElementById('heroImgFrontWrap');
+  const frontImg  = document.getElementById('heroImgFront');
+
   if (!wrap) return;
 
   function update({ scroll }) {
@@ -139,6 +186,11 @@
       const p = y / h;
       wrap.style.transform = `translateY(${p * 40}px)`;
       img.style.transform  = `scale(${1 + p * 0.035})`;
+      
+      if (frontWrap && frontImg) {
+        frontWrap.style.transform = `translateY(${p * 40}px)`;
+        frontImg.style.transform  = `scale(${1 + p * 0.035})`;
+      }
     }
   }
 
@@ -325,3 +377,4 @@
     });
   });
 })();
+

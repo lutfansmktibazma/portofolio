@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Lutfan Izzat — IT Student, Web Developer & Graphic Designer based in Indonesia." />
   <title>Lutfan Izzat</title>
 
@@ -49,13 +49,27 @@
           CONTACT
           <span class="nav-arrow">→</span>
         </a>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
       </div>
 
     </div>
   </nav>
 
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav class="mobile-nav">
+      <a href="#hero" class="mobile-nav-link" id="mn-home">HOME</a>
+      <a href="#about" class="mobile-nav-link" id="mn-about">ABOUT</a>
+      <a href="#contact" class="mobile-nav-link" id="mn-contact">CONTACT &nbsp;→</a>
+    </nav>
+  </div>
+
   <!-- ░░ HERO SECTION ░░ -->
   <section class="hero" id="hero">
+    <div class="film-grain"></div>
 
     <!-- Crosshair corner markers -->
     <i class="xh xh-tl" aria-hidden="true"></i>
@@ -72,6 +86,13 @@
     <div class="hero-image-wrap" id="heroImgWrap">
       <div class="hero-image-box" id="heroImg">
         <img src="assets/hero-section.png" alt="Lutfan Izzat Portfolio" class="hero-img-element" />
+      </div>
+    </div>
+
+    <!-- Foreground landscape image (creates depth) -->
+    <div class="hero-image-front-wrap" id="heroImgFrontWrap">
+      <div class="hero-image-front-box" id="heroImgFront">
+        <img src="assets/hero-section-front.png" alt="" class="hero-img-element" />
       </div>
     </div>
 

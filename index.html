@@ -16,14 +16,9 @@
 </head>
 
 <body>
+  <!-- ░░ PAGE TRANSITION ░░ -->
+  <div class="page-transition" id="pageTransition"></div>
 
-  <!-- ░░ FIXED GRID OVERLAY ░░ -->
-  <div class="grid-overlay" aria-hidden="true">
-    <div class="g-col"></div>
-    <div class="g-col"></div>
-    <div class="g-col"></div>
-    <div class="g-col"></div>
-  </div>
 
   <!-- ░░ NAVIGATION ░░ -->
   <nav class="nav" id="nav">
@@ -50,7 +45,7 @@
       </div>
 
       <div class="nav-right">
-        <a href="mailto:lutfanizzat@email.com" class="nav-cta" id="nl-contact">
+        <a href="#contact" class="nav-cta" id="nl-contact">
           CONTACT
           <span class="nav-arrow">→</span>
         </a>
@@ -70,16 +65,13 @@
 
     <!-- Name — LUTFAN (left, oversized) -->
     <div class="hero-name-wrap">
-      <h1 class="hero-name-first js-reveal-up" id="h-first">LUTFAN</h1>
+      <h1 class="hero-name-first js-reveal-left" id="h-first">LUTFAN</h1>
     </div>
 
     <!-- Cinematic landscape image -->
     <div class="hero-image-wrap" id="heroImgWrap">
       <div class="hero-image-box" id="heroImg">
-        <span class="ph-label">
-          <span class="ph-line">YOUR PHOTO HERE</span>
-          <span class="ph-sub">Replace with portrait (recommended: 2:1 ratio)</span>
-        </span>
+        <img src="assets/hero-section.png" alt="Lutfan Izzat Portfolio" class="hero-img-element" />
       </div>
     </div>
 
@@ -91,18 +83,18 @@
 
     <!-- Name — IZZAT (right, bottom) -->
     <div class="hero-name-wrap2">
-      <h1 class="hero-name-last js-reveal-up2" id="h-last">IZZAT</h1>
+      <h1 class="hero-name-last js-reveal-right" id="h-last">IZZAT</h1>
     </div>
 
     <!-- Bottom badge -->
     <div class="hero-badge js-reveal-fade2" id="heroBadge">
       <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-        <rect x="0" y="0" width="5" height="5" fill="white" opacity="0.7" />
-        <rect x="6" y="0" width="5" height="5" fill="white" opacity="0.7" />
-        <rect x="0" y="6" width="5" height="5" fill="white" opacity="0.7" />
-        <rect x="6" y="6" width="5" height="5" fill="white" opacity="0.3" />
+        <rect x="0" y="0" width="5" height="5" fill="white" opacity="0.9" />
+        <rect x="6" y="0" width="5" height="5" fill="white" opacity="0.9" />
+        <rect x="0" y="6" width="5" height="5" fill="white" opacity="0.9" />
+        <rect x="6" y="6" width="5" height="5" fill="white" opacity="0.4" />
       </svg>
-      <span>CERTIFIED WEB DEVELOPER</span>
+      <span>CERTIFIED CREATIVE STUDENT</span>
     </div>
 
   </section>
@@ -136,12 +128,9 @@
         </div>
       </div>
 
-      <div class="about-img-col js-reveal-img">
+      <div class="about-img-col">
         <div class="about-img-box">
-          <span class="ph-label">
-            <span class="ph-line">PORTRAIT</span>
-            <span class="ph-sub">Replace with your photo</span>
-          </span>
+          <img src="assets/about-photo.png" alt="Lutfan Izzat Portrait" class="about-img-element" />
         </div>
         <div class="about-img-caption">
           <span>I BUILD WEBSITES THAT FEEL AS GOOD AS THEY LOOK — INTENTIONAL, AND BUILT TO BE IMPRESSIVE.</span>
@@ -150,62 +139,79 @@
 
     </div>
 
-    <!-- Lower row: secondary image + statement -->
-    <div class="about-lower">
+  </section>
 
-      <div class="about-img2-col js-reveal-img2">
-        <div class="about-img2-box">
-          <span class="ph-label">
-            <span class="ph-line">PHOTO</span>
-            <span class="ph-sub">Replace with your photo</span>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="footer" id="contact">
+
+    <!-- Top grid: 4 columns -->
+    <div class="footer-top">
+
+      <!-- Col 1: Logo + desc + CTA -->
+      <div class="footer-col footer-col--brand">
+        <div class="footer-logo">
+          <span class="footer-logo-mark" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="0" y="0" width="8" height="8" fill="white" opacity="0.9" />
+              <rect x="10" y="0" width="8" height="8" fill="white" opacity="0.9" />
+              <rect x="0" y="10" width="8" height="8" fill="white" opacity="0.9" />
+              <rect x="10" y="10" width="8" height="8" fill="white" opacity="0.35" />
+            </svg>
           </span>
+          <div class="footer-logo-text">
+            <span>LUTFAN</span>
+            <span>IZZAT</span>
+          </div>
+        </div>
+        <p class="footer-desc">CRAFTING THOUGHTFUL DIGITAL<br />EXPERIENCES BUILT ON CLARITY,<br />PURPOSE, AND
+          PRECISION.</p>
+        <a href="mailto:lutfanizzat@email.com" class="footer-cta" id="ft-cta">
+          <span>BOOK A CALL</span>
+          <span class="footer-arrow">→</span>
+        </a>
+      </div>
+
+      <!-- Col 2: Nav links -->
+      <div class="footer-col footer-col--nav">
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="#hero" class="footer-nav-link roll-link" id="ft-home"><span class="roll-inner" data-text="HOME">HOME</span><span class="footer-arrow">→</span></a>
+          <a href="#about" class="footer-nav-link roll-link" id="ft-about"><span class="roll-inner" data-text="ABOUT">ABOUT</span><span class="footer-arrow">→</span></a>
+          <a href="#stats" class="footer-nav-link roll-link" id="ft-works"><span class="roll-inner" data-text="WORKS">WORKS</span><span class="footer-arrow">→</span></a>
+          <a href="#contact" class="footer-nav-link roll-link" id="ft-contact"><span class="roll-inner" data-text="CONTACT">CONTACT</span><span class="footer-arrow">→</span></a>
+        </nav>
+      </div>
+
+      <!-- Col 3: Social links -->
+      <div class="footer-col footer-col--social">
+        <span class="footer-social-label">FOLLOW ON</span>
+        <div class="footer-social-links">
+          <a href="https://twitter.com" target="_blank" rel="noopener" class="footer-social-link roll-link" id="ft-tw"><span class="roll-inner" data-text="TWITTER(X)">TWITTER(X)</span></a>
+          <a href="https://instagram.com" target="_blank" rel="noopener" class="footer-social-link roll-link" id="ft-ig"><span class="roll-inner" data-text="INSTAGRAM">INSTAGRAM</span></a>
+          <a href="https://github.com" target="_blank" rel="noopener" class="footer-social-link roll-link" id="ft-gh"><span class="roll-inner" data-text="GITHUB">GITHUB</span></a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener" class="footer-social-link roll-link" id="ft-li"><span class="roll-inner" data-text="LINKEDIN">LINKEDIN</span></a>
+          <a href="https://dribbble.com" target="_blank" rel="noopener" class="footer-social-link roll-link" id="ft-dr"><span class="roll-inner" data-text="DRIBBBLE">DRIBBBLE</span></a>
         </div>
       </div>
 
-      <div class="about-stmt js-reveal-stmt">
-        <span class="stmt-eyebrow">· DESIGN RESULT</span>
-        <h2 class="stmt-text">THE WORK DOESN'T JUST LOOK GOOD — IT PERFORMS. HERE'S THE IMPACT BEHIND THE DESIGN.</h2>
+      <!-- Col 4: Quote -->
+      <div class="footer-col footer-col--quote">
+        <p class="footer-quote">CREATING EXPERIENCES THAT<br />BALANCE AESTHETICS, USABILITY,<br />AND INTENT.</p>
+        <span class="footer-credit">© 2025 LUTFAN IZZAT</span>
       </div>
 
     </div>
 
-  </section>
-
-  <!-- ░░ STATISTICS SECTION ░░ -->
-  <section class="stats" id="stats">
-    <div class="stats-grid">
-
-      <div class="stat" id="st-1">
-        <span class="stat-dots">● ● ● ●</span>
-        <span class="stat-n" data-target="62">62+</span>
-        <span class="stat-lbl">Projects</span>
-        <p class="stat-sub">Websites designed & built for startups, agencies, and brands worldwide.</p>
-      </div>
-
-      <div class="stat" id="st-2">
-        <span class="stat-dots">● ● ●</span>
-        <span class="stat-n" data-target="3">3+</span>
-        <span class="stat-lbl">Years Experience</span>
-        <p class="stat-sub">Refining process, clarity, and performance-driven design.</p>
-      </div>
-
-      <div class="stat" id="st-3">
-        <span class="stat-dots">● ● ● ●</span>
-        <span class="stat-n" data-target="98" data-suffix="%">98%</span>
-        <span class="stat-lbl">Client Satisfaction</span>
-        <p class="stat-sub">Long-term relationships, strong communication, and clear delivery.</p>
-      </div>
-
-      <div class="stat" id="st-4">
-        <span class="stat-dots">● ● ● ●</span>
-        <span class="stat-n" data-target="5">5+</span>
-        <span class="stat-lbl">Avg Rating</span>
-        <p class="stat-sub">Trusted by founders, creatives & teams across different industries.</p>
-      </div>
-
+    <!-- Bottom: oversized name -->
+    <div class="footer-wordmark" aria-hidden="true">
+      <span>LUTFAN</span>
+      <span>IZZAT</span>
     </div>
-  </section>
 
+  </footer>
+
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="script.js"></script>
 </body>
 

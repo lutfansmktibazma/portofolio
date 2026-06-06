@@ -6,66 +6,34 @@
              scroll-reveal, stat count-up
    ============================================================ */
 
-// ── 1. INERTIA SMOOTH SCROLLING ───────────────────────────
-// Intercepts wheel events and lerps window.scrollY
-// All getBoundingClientRect() calls work as normal
+// ── 1. LENIS SMOOTH SCROLLING ──────────────────────────────
+// Replaces custom inertia with Lenis library for superior smoothness
 (function () {
-  let currentY = window.scrollY;
-  let targetY  = window.scrollY;
-  let rafId    = null;
-  const EASE   = 0.082;   // Lower = smoother / heavier feel
-  const MULT   = 0.85;    // Wheel delta multiplier
-
-  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-
-  function getMaxScroll() {
-    return document.body.scrollHeight - window.innerHeight;
-  }
-
-  window.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    targetY = clamp(targetY + e.deltaY * MULT, 0, getMaxScroll());
-    if (!rafId) raf();
-  }, { passive: false });
-
-  // Touch support
-  let touchStartY = 0;
-  window.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  window.addEventListener('touchmove', (e) => {
-    const dy = touchStartY - e.touches[0].clientY;
-    touchStartY = e.touches[0].clientY;
-    targetY = clamp(targetY + dy, 0, getMaxScroll());
-    if (!rafId) raf();
-  }, { passive: true });
-
-  function raf() {
-    currentY += (targetY - currentY) * EASE;
-
-    if (Math.abs(targetY - currentY) > 0.15) {
-      window.scrollTo(0, currentY);
-      rafId = requestAnimationFrame(raf);
-    } else {
-      window.scrollTo(0, targetY);
-      currentY = targetY;
-      rafId = null;
-    }
-  }
-
-  // Keyboard arrow / pageup / pagedown
-  window.addEventListener('keydown', (e) => {
-    const max = getMaxScroll();
-    const step = window.innerHeight * 0.82;
-    if (e.key === 'ArrowDown')  targetY = clamp(targetY + 80,   0, max);
-    if (e.key === 'ArrowUp')    targetY = clamp(targetY - 80,   0, max);
-    if (e.key === 'PageDown')   targetY = clamp(targetY + step, 0, max);
-    if (e.key === 'PageUp')     targetY = clamp(targetY - step, 0, max);
-    if (e.key === 'Home')       targetY = 0;
-    if (e.key === 'End')        targetY = max;
-    if (!rafId) raf();
+  // Initialize Lenis
+  window.lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Expo ease-out
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+    infinite: false,
   });
+
+  // RAF loop for Lenis
+  function raf(time) {
+    window.lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+
+  // Expose scrollToTarget for transitions
+  window.scrollToTarget = function(y) {
+    window.lenis.scrollTo(y, { immediate: true });
+  };
 })();
 
 // ── 2. CUSTOM CURSOR ─────────────────────────────────────
@@ -124,19 +92,36 @@
   window.addEventListener('scroll', tick, { passive: true });
   tick();
 
-  // Smooth hash navigation
+  // Smooth hash navigation with sweep transition
+  const varNav = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 80;
+  
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const target = document.querySelector(a.getAttribute('href'));
       if (!target) return;
       e.preventDefault();
-      const top = target.getBoundingClientRect().top + window.scrollY - 54;
-      // Trigger inertia toward target
-      window.dispatchEvent(Object.assign(new WheelEvent('wheel', {
-        deltaY: top - window.scrollY,
-        bubbles: true,
-        cancelable: true,
-      })));
+      const top = target.getBoundingClientRect().top + window.scrollY - varNav;
+      
+      const pt = document.getElementById('pageTransition');
+      if (pt) {
+        pt.style.transition = 'transform 0.6s cubic-bezier(0.85, 0, 0.15, 1)';
+        pt.style.transform = 'translateY(0)';
+        
+        setTimeout(() => {
+          if (window.scrollToTarget) window.scrollToTarget(top);
+          else window.scrollTo(0, top);
+          
+          pt.style.transform = 'translateY(-100%)';
+          
+          setTimeout(() => {
+            pt.style.transition = 'none';
+            pt.style.transform = 'translateY(100%)';
+          }, 600);
+        }, 600);
+      } else {
+        if (window.scrollToTarget) window.scrollToTarget(top);
+        else window.scrollTo(0, top);
+      }
     });
   });
 })();
@@ -147,28 +132,28 @@
   const img  = document.getElementById('heroImg');
   if (!wrap) return;
 
-  let ticking = false;
-
-  function update() {
-    const y = window.scrollY;
+  function update({ scroll }) {
+    const y = scroll || window.scrollY;
     const h = window.innerHeight;
     if (y <= h * 1.2) {
       const p = y / h;
       wrap.style.transform = `translateY(${p * 40}px)`;
       img.style.transform  = `scale(${1 + p * 0.035})`;
     }
-    ticking = false;
   }
 
-  window.addEventListener('scroll', () => {
-    if (!ticking) { requestAnimationFrame(update); ticking = true; }
-  }, { passive: true });
+  // Fallback to window scroll if lenis isn't ready
+  if (window.lenis) {
+    window.lenis.on('scroll', update);
+  } else {
+    window.addEventListener('scroll', () => update({ scroll: window.scrollY }), { passive: true });
+  }
 })();
 
 // ── 5. SCROLL REVEAL ─────────────────────────────────────
 (function () {
   const classes = [
-    '.js-reveal-up', '.js-reveal-up2',
+    '.js-reveal-left', '.js-reveal-right',
     '.js-reveal-fade', '.js-reveal-fade2',
     '.js-reveal-img', '.js-reveal-img2',
     '.js-reveal-stmt',
@@ -191,7 +176,7 @@
   // Hero elements: trigger after short delay on load
   window.addEventListener('load', () => {
     setTimeout(() => {
-      ['.js-reveal-up', '.js-reveal-up2', '.js-reveal-fade', '.js-reveal-fade2'].forEach((sel) => {
+      ['.js-reveal-left', '.js-reveal-right', '.js-reveal-fade', '.js-reveal-fade2'].forEach((sel) => {
         document.querySelectorAll(sel).forEach((el) => {
           if (el.getBoundingClientRect().top < window.innerHeight) {
             el.classList.add('on');
@@ -316,4 +301,27 @@
 
   // Initial pass
   update();
+})();
+
+// ── 8. ROLLING TEXT HOVER (PER-CHARACTER) ────────────────
+(function () {
+  document.querySelectorAll('.roll-inner').forEach((el) => {
+    const text = el.getAttribute('data-text');
+    if (!text) return;
+    
+    el.innerHTML = ''; // Clear text
+    el.removeAttribute('data-text');
+    
+    [...text].forEach((ch, i) => {
+      const charSpan = document.createElement('span');
+      charSpan.className = 'roll-char';
+      charSpan.innerHTML = ch === ' ' ? '&nbsp;' : ch;
+      charSpan.setAttribute('data-char', ch);
+      
+      // Add staggered delay (e.g., 0.02s per letter)
+      charSpan.style.transitionDelay = `${i * 0.025}s`;
+      
+      el.appendChild(charSpan);
+    });
+  });
 })();

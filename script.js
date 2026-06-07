@@ -9,6 +9,30 @@
 // ── 1. LENIS SMOOTH SCROLLING ──────────────────────────────
 // Replaces custom inertia with Lenis library for superior smoothness
 (function () {
+  if (typeof Lenis !== 'function') {
+    window.lenis = {
+      scrollTo(target, options = {}) {
+        const top = typeof target === 'number'
+          ? target
+          : target.getBoundingClientRect().top + window.scrollY + (options.offset || 0);
+
+        window.scrollTo({
+          top,
+          behavior: options.immediate ? 'auto' : 'smooth',
+        });
+      },
+      on() {},
+      start() {},
+      stop() {},
+    };
+
+    window.scrollToTarget = function(y) {
+      window.lenis.scrollTo(y, { immediate: true });
+    };
+
+    return;
+  }
+
   // Initialize Lenis
   window.lenis = new Lenis({
     duration: 1.2,
@@ -45,6 +69,7 @@
   function close() {
     btn.classList.remove('open');
     menu.classList.remove('open');
+    document.body.classList.remove('menu-open');
     btn.setAttribute('aria-expanded', 'false');
     menu.setAttribute('aria-hidden', 'true');
     if (window.lenis) window.lenis.start();
@@ -53,6 +78,7 @@
   btn.addEventListener('click', () => {
     const isOpen = btn.classList.toggle('open');
     menu.classList.toggle('open', isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
     btn.setAttribute('aria-expanded', String(isOpen));
     menu.setAttribute('aria-hidden', String(!isOpen));
     // Pause Lenis scroll while menu is open
